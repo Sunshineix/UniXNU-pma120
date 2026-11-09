@@ -47,8 +47,8 @@
 "size_mib" = 176
 "loader" = "firmware"
 "title" = "Boot"
-# TODO: dram_size 沿用 sheng 值 0x80000000，SM8850 上待确认
-"dram_size" = "0x80000000"
+# dram_size = 8 GiB: matches the DTS memory@a00000000 window (ADT handoff check)
+"dram_size" = "0x200000000"
 "panic_screen" = true
 "kernel_args" = ["-v", "serial=3"]
 
