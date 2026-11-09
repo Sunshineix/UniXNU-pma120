@@ -51,9 +51,9 @@
 "kernel_args" = ["-v", "serial=3"]
 
 ["payload"."adt"]
-# TODO: SM8850 chip_id 与 owned_memory_size（sheng: "8142" / 0x130000000；需从上游或实验确定）
-"chip_id" = "0"
-"owned_memory_size" = "0x10000000"
+# chip_id 0x8015 is SM8850 (the pandora ADT builder, same SoC); owned = the 8 GiB window
+"chip_id" = "0x8015"
+"owned_memory_size" = "0x200000000"
 "packed_data_ramdisk" = true
 "unique_chip_id" = "required"
 
