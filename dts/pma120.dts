@@ -1,9 +1,40 @@
-/* OPPO Find X9 Ultra (pma120) 板级 DTS — TODO
- * 起点已生成：device/PMA120/pma120-vendor.dts（5774 节点，scripts/dtb_to_dts.py 反编译本机 dtb）。
- * 整理方式：以 soc:dts/sm8850.dtsi（主线 kaanapali）为基，把 vendor dts 的板级差异
- * （reserved-memory 52 条、面板 AC347、splash_region@fc800000 等）合并进来。
- * 关键输入（已提取，见设备情报.md）：reserved-memory 52 条、面板 AC347_P_3_A0019、
- * splash_region@fc800000、GIC 0x17000000/0x17080000、msm-id 0x295、board-id 0x8。 */
+// SPDX-License-Identifier: BSD-3-Clause
+// OPPO Find X9 Ultra (pma120, SM8850 "canoe"): board-level nodes.
+// Memory and splash come from the phone's own device tree (device/PMA120/fdt.dtb):
+//   /memory holds, among the fragments, one 8 GiB run at 0xA00000000 (0x2_00000000),
+//   which is exactly DarwinBoot's largest contiguous window request (8 GiB).
+//   /reserved-memory/splash_region = 0xfc800000, 0x2b00000 (label cont_splash_region).
 /dts-v1/;
+/include/ "sm8850.dtsi"
+
 / {
+    model = "OPPO Find X9 Ultra";
+    compatible = "oppo,pma120", "qcom,sm8850";
+
+    memory@a00000000 {
+        device_type = "memory";
+        reg = <0x0a 0x00000000 0x2 0x00000000>;
+    };
+
+    reserved-memory {
+        #address-cells = <2>;
+        #size-cells = <2>;
+        ranges;
+
+        splash_region: framebuffer@fc800000 {
+            label = "cont_splash_region";
+            reg = <0 0xfc800000 0 0x2b00000>;
+            no-map;
+        };
+    };
 };
+
+// Scheduler clusters: cpu0-5 are the Oryon M group, cpu6-7 the Oryon L (prime) pair.
+&cpu0 { unixnu,cluster-type = "E"; };
+&cpu1 { unixnu,cluster-type = "E"; };
+&cpu2 { unixnu,cluster-type = "E"; };
+&cpu3 { unixnu,cluster-type = "E"; };
+&cpu4 { unixnu,cluster-type = "E"; };
+&cpu5 { unixnu,cluster-type = "E"; };
+&cpu6 { unixnu,cluster-type = "P"; };
+&cpu7 { unixnu,cluster-type = "P"; };
