@@ -1,2 +1,3 @@
 # XNU 补丁序列（设备层）— 每行一个补丁，按应用顺序；# 开头为注释。
 # pma120 板级 XNU 补丁（平台电源、UFS、输入等）落地后在此登记。
+native-stack-shift.patch
