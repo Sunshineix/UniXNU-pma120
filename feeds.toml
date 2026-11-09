@@ -1,0 +1,8 @@
+# SM8850 SoC 源码 pin。
+# 本地开发可用 local.toml 的 local 覆盖（见 local.toml.example）；
+# CI 构建使用下面这条 git 源。
+[[source]]
+kind = "soc"
+name = "sm8850"
+git = "https://github.com/Sunshineix/UniXNU-sm8850-common.git"
+commit = "2a86e9eec5ddd2b9d84c560624b1a74af5ad2ade"

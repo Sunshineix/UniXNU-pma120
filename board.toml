@@ -1,0 +1,74 @@
+"schema_version" = 2
+
+["board"]
+"name" = "pma120"
+"soc" = "SM8850"
+"description" = "OPPO Find X9 Ultra"
+"kit" = "pma120"
+"soc_source" = "sm8850"
+"os_profile" = "ipados-27.0.1-24A446"
+
+
+["userdata"]
+# 本机 GPT 实测（2026-11-07，scripts/gpt_parse.py，UFS 4KiB 扇区，LUN sda）
+"first_lba" = 5188332
+"last_lba" = 249037818
+"lba_bytes" = 4096
+
+
+["kernel"]
+"defconfig" = "pma120_ipados27_defconfig"
+# 最小食谱集（SM8850 组件落地前）；参考 sheng 的 archives 逐步扩充
+"archives" = ["build-corecrypto-14.py", "build-corecrypto-14.py --namespace", "component:ArmDTPlatform", "component:ArmCpu", "build-libpthread-kernel.py"]
+"config_fragments" = ["arch:configs/common.config", "os:configs/ipados.config"]
+"patch_series" = ["arch:patches/xnu/series", "soc:patches/xnu/series", "os:patches/xnu/series", "device:patches/xnu/series"]
+
+
+["firmware"]
+"config" = "pma120"
+"dsc" = "Platforms/OPPO/pma120Pkg/pma120.dsc"
+"fd" = "Build/pma120Pkg/{target}_CLANGPDB/FV/SILICIUM_UEFI.fd"
+"preflight" = []
+"submodules" = ["Common/Mu", "Common/Mu_OEM_Sample", "Silicium-ACPI", "Silicon/Silicium/OpensslPkg/Library/OpensslLib/openssl"]
+"patches" = ["Resources/MuPatches/Gic-Spurious.patch"]
+"packages" = ["{uefi}", "{uefi}/Platforms/OPPO", "{tree}/package", "{tree}/drivers/DarwinBoot", "{edk2}", "{uefi}/Common/Mu", "{uefi}/Common/Mu_OEM_Sample", "{uefi}/Silicon/Qualcomm", "{uefi}/Silicon/Silicium", "{uefi}/Silicium-ACPI", "{uefi}/Silicium-ACPI/Platforms/OPPO", "{uefi}/Silicium-ACPI/Silicon/Qualcomm"]
+
+["firmware"."defines"]
+"DEVICE_MODEL" = "pma120"
+"MEMORY_PROTECTION" = "TRUE"
+"SHIP_MODE" = "FALSE"
+"BUILDID_STRING" = "pma120-research"
+
+
+["payload"]
+"volume" = "PMA120ESP"
+"size_mib" = 176
+"loader" = "firmware"
+"title" = "Boot"
+# TODO: dram_size 沿用 sheng 值 0x80000000，SM8850 上待确认
+"dram_size" = "0x80000000"
+"panic_screen" = true
+"kernel_args" = ["-v", "serial=3"]
+
+["payload"."adt"]
+# TODO: SM8850 chip_id 与 owned_memory_size（sheng: "8142" / 0x130000000；需从上游或实验确定）
+"chip_id" = "0"
+"owned_memory_size" = "0x10000000"
+"packed_data_ramdisk" = true
+"unique_chip_id" = "required"
+
+
+["bootimg"]
+"dtb" = "build/pma120/pma120.dtb"
+# 本机 dtb 的 splash_region 位于 0xfc800000（实测值；sheng 用其 b8000000 对应值）
+"dtb_node" = [{ "path" = "/reserved-memory/splash_region", "props" = [{ "name" = "label", "type" = "s", "value" = "cont_splash_region" }, { "name" = "reg", "type" = "x", "value" = ["0x0", "0xfc800000", "0x0", "0x2b00000"] }] }]
+
+
+["device_tree"]
+"source" = "device:dts/pma120.dts"
+"include_dirs" = ["soc:dts"]
+
+
+["components"]
+# SM8850 组件（Adreno840/Metal、UFS、输入等）落地前的最小集
+"include" = ["ArmDTPlatform", "ArmCpu", "XnuPrelink", "DarwinBoot", "RamBlock", "GopFramebuffer", "AppleKeyStoreState"]

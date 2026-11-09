@@ -1,0 +1,9 @@
+/* OPPO Find X9 Ultra (pma120) 板级 DTS — TODO
+ * 起点已生成：device/PMA120/pma120-vendor.dts（5774 节点，scripts/dtb_to_dts.py 反编译本机 dtb）。
+ * 整理方式：以 soc:dts/sm8850.dtsi（主线 kaanapali）为基，把 vendor dts 的板级差异
+ * （reserved-memory 52 条、面板 AC347、splash_region@fc800000 等）合并进来。
+ * 关键输入（已提取，见设备情报.md）：reserved-memory 52 条、面板 AC347_P_3_A0019、
+ * splash_region@fc800000、GIC 0x17000000/0x17080000、msm-id 0x295、board-id 0x8。 */
+/dts-v1/;
+/ {
+};
