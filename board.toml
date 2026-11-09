@@ -19,7 +19,9 @@
 ["kernel"]
 "defconfig" = "pma120_ipados27_defconfig"
 # 最小食谱集（SM8850 组件落地前）；参考 sheng 的 archives 逐步扩充
-"archives" = ["build-corecrypto-14.py", "build-corecrypto-14.py --namespace", "component:ArmDTPlatform", "component:ArmCpu", "build-libpthread-kernel.py"]
+"archives" = ["build-corecrypto-14.py", "build-corecrypto-14.py --namespace", "component:ArmDTPlatform", "component:ArmCpu", "build-libpthread-kernel.py",
+  "component:AppleKeyStoreState",
+  "component:RamBlock"]
 "config_fragments" = ["arch:configs/common.config", "os:configs/ipados.config"]
 "patch_series" = ["arch:patches/xnu/series", "soc:patches/xnu/series", "os:patches/xnu/series", "device:patches/xnu/series"]
 
